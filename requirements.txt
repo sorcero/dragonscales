@@ -1,0 +1,7 @@
+uvicorn==0.11.7
+fastapi==0.60.0
+gunicorn==20.0.4
+redis==3.5.3
+rq==1.8.1
+black==21.9b0
+pyflakes==2.4.0
