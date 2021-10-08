@@ -6,5 +6,12 @@
             "module": "tests.tasks.task",
             "args": {}
         }
+    ],
+    "storages": [
+        {
+            "name": "storage",
+            "module": "tests.storages.storage",
+            "args": {}
+        }
     ]
 }

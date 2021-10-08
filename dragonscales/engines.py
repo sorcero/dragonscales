@@ -10,6 +10,7 @@ class Engine(object):
     def __init__(self):
         self._tasks = {}
         self._queues = {}
+        self._storages = {}
 
         self._path = os.environ.get("DRAGONSCALES_PROJECT_PATH")
         self._url = os.environ.get("DRAGONSCALES_REDIS_URL", "redis://localhost:6379")
@@ -26,6 +27,11 @@ class Engine(object):
                 continue
 
             self._queues[task.queue] = Queue(task.queue, connection=self._redis)
+        
+        for storage in self._project.storages:
+            module = __import__(storage.module, fromlist=[None])
+            instance = module.Storage(**storage.args)
+            self._storages[storage.name] = instance
 
     def enqueue(self, task):
         instance = self._tasks.get(task.name)

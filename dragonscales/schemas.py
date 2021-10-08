@@ -31,3 +31,14 @@ class JobStatus(BaseModel):
     id: str
     status: str
     result: Union[dict, None]
+
+class StorageDef(BaseModel):
+    
+    name: str
+    module: str
+    args: dict
+
+class StorageRef(BaseModel):
+    
+    name: str
+    params: dict
