@@ -49,7 +49,8 @@ class Engine(object):
             task_instance.private_run,
             storage_instance,
             callback_instance,
-            **task.params,
+            task.params,
+            callback.params,
         )
 
         return job
