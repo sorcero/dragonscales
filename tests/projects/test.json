@@ -13,5 +13,12 @@
             "module": "tests.storages.storage",
             "args": {}
         }
+    ],
+    "callbacks": [
+        {
+            "name": "callback",
+            "module": "tests.callbacks.callback",
+            "args": {}
+        }
     ]
 }
