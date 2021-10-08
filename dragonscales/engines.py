@@ -19,12 +19,8 @@ class Engine(object):
 
         for task in self._project.tasks:
             module = __import__(task.module, fromlist=[None])
-            instance = module.Task(**task.args)
-
+            instance = module.Task(queue=task.queue, **task.args)
             self._tasks[task.name] = instance
-
-            # XXX keep track of which queue is used by this task
-            setattr(instance, "queue", task.queue)
 
             if self._queues.get(task.queue) is not None:
                 continue
