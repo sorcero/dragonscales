@@ -10,40 +10,11 @@ class TaskDef(BaseModel):
     args: dict
 
 
-class Project(BaseModel):
-
-    tasks: List[TaskDef]
-
-
-class TaskRef(BaseModel):
-
-    name: str
-    params: dict
-
-
-class JobRequest(BaseModel):
-
-    task: TaskRef
-
-
-class JobStatus(BaseModel):
-
-    id: str
-    status: str
-    result: Union[dict, None]
-
-
 class StorageDef(BaseModel):
 
     name: str
     module: str
     args: dict
-
-
-class StorageRef(BaseModel):
-
-    name: str
-    params: dict
 
 
 class CallbackDef(BaseModel):
@@ -53,7 +24,40 @@ class CallbackDef(BaseModel):
     args: dict
 
 
+class Project(BaseModel):
+
+    tasks: List[TaskDef]
+    storages: List[StorageDef]
+    callbacks: List[CallbackDef]
+
+
+class TaskRef(BaseModel):
+
+    name: str
+    params: dict
+
+
+class StorageRef(BaseModel):
+
+    name: str
+    params: dict
+
+
 class CallbackRef(BaseModel):
 
     name: str
     params: dict
+
+
+class JobRequest(BaseModel):
+
+    task: TaskRef
+    storage: StorageRef
+    callback: CallbackRef
+
+
+class JobStatus(BaseModel):
+
+    id: str
+    status: str
+    result: Union[dict, None]
