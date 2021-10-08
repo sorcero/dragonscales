@@ -17,7 +17,7 @@ app.add_middleware(
 
 @app.post("/api/v1/jobs/", response_model=JobStatus)
 def create(request: JobRequest):
-    job = engine.enqueue(request.task)
+    job = engine.enqueue(request.task, request.storage, request.callback)
     return JobStatus(id=job.id, status=job.get_status(refresh=True), result={})
 
 

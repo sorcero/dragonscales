@@ -39,11 +39,18 @@ class Engine(object):
             instance = module.Callback(**callback.args)
             self._callbacks[callback.name] = instance
 
-    def enqueue(self, task):
-        instance = self._tasks.get(task.name)
-        queue = self._queues.get(instance.queue)
+    def enqueue(self, task, storage, callback):
+        task_instance = self._tasks.get(task.name)
+        storage_instance = self._storages.get(storage.name)
+        callback_instance = self._callbacks.get(callback.name)
+        queue = self._queues.get(task_instance.queue)
 
-        job = queue.enqueue(instance.run, **task.params)
+        job = queue.enqueue(
+            task_instance.private_run,
+            storage_instance,
+            callback_instance,
+            **task.params,
+        )
 
         return job
 
