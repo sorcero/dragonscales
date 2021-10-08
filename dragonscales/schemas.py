@@ -15,7 +15,7 @@ class Project(BaseModel):
     tasks: List[TaskDef]
 
 
-class TaskReq(BaseModel):
+class TaskRef(BaseModel):
 
     name: str
     params: dict
@@ -23,7 +23,7 @@ class TaskReq(BaseModel):
 
 class JobRequest(BaseModel):
 
-    task: TaskReq
+    task: TaskRef
 
 
 class JobStatus(BaseModel):
