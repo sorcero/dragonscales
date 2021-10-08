@@ -1,0 +1,10 @@
+{
+    "tasks": [
+        {
+            "name": "task",
+            "queue": "queue",
+            "module": "tests.tasks.task",
+            "args": {}
+        }
+    ]
+}
