@@ -26,5 +26,10 @@
             "module": "tests.callbacks.callback",
             "args": {}
         }
-    ]
+    ],
+    "authorizer": {
+        "name": "authorizer",
+        "module": "tests.authorizers.authorizer",
+        "args": {}
+    }
 }

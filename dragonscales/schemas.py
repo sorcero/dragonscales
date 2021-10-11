@@ -24,6 +24,13 @@ class CallbackDef(BaseModel):
     args: dict
 
 
+class AuthorizerDef(BaseModel):
+
+    name: str
+    module: str
+    args: dict
+
+
 class QueueDef(BaseModel):
 
     name: str
@@ -36,6 +43,7 @@ class Project(BaseModel):
     tasks: List[TaskDef]
     storages: List[StorageDef]
     callbacks: List[CallbackDef]
+    authorizer: AuthorizerDef
 
 
 class TaskRef(BaseModel):

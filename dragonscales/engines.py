@@ -2,6 +2,7 @@ import os
 
 from rq import Queue
 from redis import client
+from fastapi import Request
 
 from . import schemas
 
@@ -12,6 +13,7 @@ class Engine(object):
         self._queues = {}
         self._storages = {}
         self._callbacks = {}
+        self._authorizer = None
 
         self._path = os.environ.get("DRAGONSCALES_PROJECT_PATH")
         self._url = os.environ.get("DRAGONSCALES_REDIS_URL", "redis://localhost:6379")
@@ -39,6 +41,10 @@ class Engine(object):
             instance = module.Callback(**callback.args)
             self._callbacks[callback.name] = instance
 
+        authorizer = self._project.authorizer
+        module = __import__(authorizer.module, fromlist=[None])
+        self._authorizer = module.Authorizer(**authorizer.args)
+
     def enqueue(self, task, storage, callback):
         task_instance = self._tasks.get(task.name)
         storage_instance = self._storages.get(storage.name)
@@ -62,3 +68,6 @@ class Engine(object):
                 return job
 
         return None
+
+    async def authorize(self, request: Request):
+        return self._authorizer.authorize(request)

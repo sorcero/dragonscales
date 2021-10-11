@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from .engines import Engine
@@ -16,12 +16,12 @@ app.add_middleware(
 
 
 @app.post("/api/v1/jobs/", response_model=JobStatus)
-def create(request: JobRequest):
+def create(request: JobRequest, user: dict = Depends(engine.authorize)):
     job = engine.enqueue(request.task, request.storage, request.callback)
     return JobStatus(id=job.id, status=job.get_status(refresh=True), result={})
 
 
 @app.get("/api/v1/jobs/{id}", response_model=JobStatus)
-def get(id: str):
+def get(id: str, user: dict = Depends(engine.authorize)):
     job = engine.fetch(id)
     return JobStatus(id=job.id, status=job.get_status(refresh=True), result=job.result)
