@@ -7,10 +7,11 @@ class BaseTask(BaseModel):
 
     queue: str
 
-    def private_run(self, storage, callback, task_params, callback_params):
+    def private_run(
+        self, storage, callback, task_params, storage_params, callback_params
+    ):
         result = self.run(**task_params)
-        location = storage.store(result)
-
+        location = storage.store(result, **storage_params)
         callback.call(location, **callback_params)
 
         return location

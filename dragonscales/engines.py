@@ -50,6 +50,7 @@ class Engine(object):
             storage_instance,
             callback_instance,
             task.params,
+            storage.params,
             callback.params,
         )
 
