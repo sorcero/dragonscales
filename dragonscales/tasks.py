@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 
 class BaseTask(BaseModel):
-
     class Config:
         extra = "allow"
 

@@ -20,7 +20,9 @@ class Engine(object):
         self._project = schemas.Project.parse_file(self._path)
 
         for queue in self._project.queues:
-            self._queues[queue.name] = Queue(queue.name, connection=self._redis, **queue.args)
+            self._queues[queue.name] = Queue(
+                queue.name, connection=self._redis, **queue.args
+            )
 
         for task in self._project.tasks:
             module = __import__(task.module, fromlist=[None])
