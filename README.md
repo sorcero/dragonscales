@@ -1,5 +1,7 @@
 # dragonscales
 
+![Basic Concepts](./data/diagram.svg)
+
 ## Installation
 
 ```
