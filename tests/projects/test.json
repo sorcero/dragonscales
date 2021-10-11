@@ -1,4 +1,10 @@
 {
+    "queues": [
+        {
+            "name": "queue",
+            "args": {}
+        }
+    ],
     "tasks": [
         {
             "name": "task",

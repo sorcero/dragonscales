@@ -19,15 +19,13 @@ class Engine(object):
         self._redis = client.Redis.from_url(self._url)
         self._project = schemas.Project.parse_file(self._path)
 
+        for queue in self._project.queues:
+            self._queues[queue.name] = Queue(queue.name, connection=self._redis, **queue.args)
+
         for task in self._project.tasks:
             module = __import__(task.module, fromlist=[None])
             instance = module.Task(queue=task.queue, **task.args)
             self._tasks[task.name] = instance
-
-            if self._queues.get(task.queue) is not None:
-                continue
-
-            self._queues[task.queue] = Queue(task.queue, connection=self._redis)
 
         for storage in self._project.storages:
             module = __import__(storage.module, fromlist=[None])

@@ -24,8 +24,15 @@ class CallbackDef(BaseModel):
     args: dict
 
 
+class QueueDef(BaseModel):
+
+    name: str
+    args: dict
+
+
 class Project(BaseModel):
 
+    queues: List[QueueDef]
     tasks: List[TaskDef]
     storages: List[StorageDef]
     callbacks: List[CallbackDef]
