@@ -69,5 +69,20 @@ class Engine(object):
 
         return None
 
+    def get_jobs(self):
+        jobs = set()
+
+        for queue in self._queues.values():
+            for registry in [
+                "started_job_registry",
+                "deferred_job_registry",
+                "finished_job_registry",
+                "failed_job_registry",
+                "scheduled_job_registry",
+            ]:
+                jobs.update(getattr(queue, registry).get_job_ids())
+
+        return jobs
+
     async def authorize(self, request: Request):
         return self._authorizer.authorize(request)

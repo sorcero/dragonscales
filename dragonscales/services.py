@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,3 +26,8 @@ def create(request: JobRequest, user: dict = Depends(engine.authorize)):
 def get(id: str, user: dict = Depends(engine.authorize)):
     job = engine.fetch(id)
     return JobStatus(id=job.id, status=job.get_status(refresh=True), result=job.result)
+
+
+@app.get("/api/v1/jobs/", response_model=List[str])
+def list(user: dict = Depends(engine.authorize)):
+    return engine.get_jobs()
