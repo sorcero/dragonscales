@@ -1,8 +1,9 @@
 import os
 
 from rq import Queue
+from rq.command import send_stop_job_command
 from redis import client
-from fastapi import Request
+from fastapi import Request, status, HTTPException
 
 from . import schemas
 
@@ -83,6 +84,24 @@ class Engine(object):
                 jobs.update(getattr(queue, registry).get_job_ids())
 
         return jobs
+
+    def cancel(self, id):
+        job = self.fetch(id)
+
+        if job is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Not found",
+            )
+
+        # stop if it's currently running
+        try:
+            send_stop_job_command(self._redis, job.id)
+        except Exception:
+            job.cancel()
+
+        # NOTE the job is running as this operation is async
+        return job
 
     async def authorize(self, request: Request):
         return self._authorizer.authorize(request)

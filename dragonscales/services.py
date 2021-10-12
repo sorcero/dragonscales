@@ -31,3 +31,9 @@ def get(id: str, user: dict = Depends(engine.authorize)):
 @app.get("/api/v1/jobs/", response_model=List[str])
 def list(user: dict = Depends(engine.authorize)):
     return engine.get_jobs()
+
+
+@app.delete("/api/v1/jobs/{id}", response_model=JobStatus)
+def cancel(id: str, user: dict = Depends(engine.authorize)):
+    job = engine.cancel(id)
+    return JobStatus(id=job.id, status=job.get_status(refresh=True), result=job.result)
