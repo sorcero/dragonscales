@@ -64,11 +64,19 @@ class Engine(object):
         return job
 
     def fetch(self, id):
+        job = None
+
         for queue in self._queues.values():
             if job := queue.fetch_job(id):
-                return job
+                break
 
-        return None
+        if job is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Not found",
+            )
+
+        return job
 
     def get_jobs(self):
         jobs = set()
