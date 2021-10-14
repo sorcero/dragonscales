@@ -33,7 +33,6 @@ def list(user: dict = Depends(engine.authorize)):
     return engine.get_jobs()
 
 
-@app.delete("/api/v1/jobs/{id}", response_model=JobStatus)
+@app.delete("/api/v1/jobs/{id}", response_model=None)
 def cancel(id: str, user: dict = Depends(engine.authorize)):
-    job = engine.cancel(id)
-    return JobStatus(id=job.id, status=job.get_status(refresh=True), result=job.result)
+    engine.cancel(id)

@@ -107,9 +107,7 @@ class Engine(object):
             send_stop_job_command(self._redis, job.id)
         except Exception:
             job.cancel()
-
-        # NOTE the job is running as this operation is async
-        return job
+        job.delete()
 
     async def authorize(self, request: Request):
         return self._authorizer.authorize(request)
