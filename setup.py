@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(
-    name="dragoncales",
+    name="dragonscales",
     version="0.1",
     description="An async Jobs system framework",
     author="Martin Abente Lahaye",
