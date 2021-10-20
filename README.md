@@ -11,9 +11,9 @@
 
 ### Service developer
 
-As the developer, you need to populate the service with the tasks that will later be available for the clients to run.
+As the developer, you need to provide the service with the tasks that will be available for the clients to run.
 
-For each task you want to expose, a [BaseTask](dragonscales/tasks.py) subclass needs to be created. The `run` method is invoked to execute the task. The following is a basic example of a [Task](tests/tasks/task.py):
+For each task you want to expose, a [BaseTask](dragonscales/tasks.py) subclass must be created. The `run` method is invoked to execute the task. The following is a basic example of a [Task](tests/tasks/task.py):
 
 ```python
 class Task(tasks.BaseTask):
@@ -68,21 +68,24 @@ $ pip install -r requirements.txt
 
 ```bash
 $ cp tests/projects/test.json project.json
-$ vim project.json # personalize it!
+$ vim project.json # edit it with your own queues, tasks, etc
 ```
 
 ## Running the service
 
-On parallel tabs, run:
+Run the redis server:
 
 ```bash
 $ redis-server
 ```
 
-For each queue in specified in the JSON project file, run a worker in a different tab.
+For each queue specified in the project file, run a worker:
+
 ```bash
 $ rq worker $QUEUE
 ```
+
+Finally, run the jobs service:
 
 ```bash
 $ export DRAGONSCALES_PROJECT_PATH=project.json
