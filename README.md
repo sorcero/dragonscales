@@ -4,6 +4,11 @@
 
 ## Usage
 
+<p align="center">
+    <img width="70%" src="./data/diagram.svg"><br>
+    Figure 1: <em>The interaction of both the developer and the client with the framework.</em>
+</p>
+
 ### Service developer
 
 As the developer, you need to populate the service with the tasks that will later be available for the clients to run.
@@ -42,22 +47,13 @@ If you decide you want to add some authorization step for the clients to access 
 
 ---
 
-Once you're done with all the previous implementation, there is only one thing left to do: Create a `dragonscales` project file with your tasks, storages, callbacks, and authorizer, along with the path to their respective modules and constructor arguments. You also need to list the names of all the queues that will be available in the jobs system.
+Once you're done with all the previous implementation steps, there is only one thing left to do: Create a `dragonscales` project file with your tasks, storages, callbacks, and authorizer, along with the path to their respective modules and constructor arguments. You also need to list the names of all the queues that will be available in the jobs system.
 
 The path to the project file must be exported with the environment variable `DRAGONSCALES_PROJECT_PATH`. A basic example of a project file can be found in [here](tests/projects/test.json).
 
 ### Service client
 
-Once the service is up and running (see installation and setup instructions below), the clients can run a task by requesting the service to queue a job for that task. The client invokes the `/jobs` endpoint to specify a specific task, storage, and callback among the available ones - each one defined by its name and parameters. See this [job request](tests/jobs/test.json) as an example.
-```
-
----
-
-<p align="center">
-    <img width="70%" src="./data/diagram.svg"><br>
-    Figure 1: <em>The interaction of both the developer and the client with the framework.</em>
-</p>
-
+Once the service is up and running (see installation and setup instructions below), the clients can run a task by requesting the service to queue a job for that task. The client invokes the `/api/v1/jobs` endpoint to specify a specific task, storage, and callback among the available ones - each one defined by its name and parameters. See this [job request](tests/jobs/test.json) as an example.
 
 ## Installation
 
