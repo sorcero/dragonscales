@@ -24,10 +24,12 @@ from setuptools import setup
 
 setup(
     name="dragonscales",
-    version="0.1",
-    description="An async Jobs system framework",
-    author="Martin Abente Lahaye",
-    author_email="martin@sorcero.com",
-    url="",
+    version="0.1.0",
+    description="A highly-customizable asynchronous job-scheduler framework",
+    author="Sorcero, Inc.",
+    author_email="dragonscales@sorcero.com",
+    url="https://gitlab.com/sorcero/community/dragonscales",
     packages=["dragonscales"],
+    license="LGPL-3.0-or-later",
+    license_files = ("LICENSE",),
 )
