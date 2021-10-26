@@ -88,6 +88,9 @@ $ rq worker $QUEUE
 Finally, run the jobs service:
 
 ```bash
+$ export DRAGONSCALES_LOGGER_LEVEL=DEBUG
+$ export DRAGONSCALES_LOGGER_PATH=dragonscales.log
+$ export DRAGONSCALES_LOGGER_MAX_BYTES=1048576
 $ export DRAGONSCALES_PROJECT_PATH=project.json
 $ export DRAGONSCALES_REDIS_URL=redis://localhost:6379
 $ gunicorn --bind 0.0.0.0:5003 --worker-class=uvicorn.workers.UvicornWorker wsgi-dragonscales:app

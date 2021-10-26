@@ -27,6 +27,7 @@ from redis import client
 from fastapi import Request, status, HTTPException
 
 from . import schemas
+from .logger import logger
 
 
 class Engine(object):
@@ -39,6 +40,11 @@ class Engine(object):
 
         self._path = os.environ.get("DRAGONSCALES_PROJECT_PATH")
         self._url = os.environ.get("DRAGONSCALES_REDIS_URL", "redis://localhost:6379")
+
+        logger.debug(
+            "initializing",
+            extra={"props": {"project": self._path, "service": self._url}},
+        )
 
         self._redis = client.Redis.from_url(self._url)
         self._project = schemas.Project.parse_file(self._path)
