@@ -1,0 +1,117 @@
+#!/usr/bin/python3
+
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2021 Sorcero, Inc.
+#
+# This file is part of Sorcero's Language Intelligence platform
+# (see https://www.sorcero.com).
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+import os
+import json
+import time
+import argparse
+import requests
+
+from urllib.parse import urljoin
+
+WAIT_FREQUENCY = 30
+
+
+def queue(url, job, headers):
+    with open(job, "r") as _file:
+        job = json.loads(_file.read())
+    request = requests.post(urljoin(url, "api/v1/jobs/"), headers=headers, json=job)
+    request.raise_for_status()
+    return request.json()
+
+
+def check(url, job, headers):
+    request = requests.get(urljoin(url, f"api/v1/jobs/{job}"), headers=headers)
+    request.raise_for_status()
+    return request.json()
+
+
+def check_and_wait(url, job, headers):
+    while True:
+        response = check(url, job, headers)
+
+        if response["status"] != "pending":
+            return response
+
+        time.sleep(WAIT_FREQUENCY)
+
+    raise Exception("WAIT_MAX_RETRIES has been reached")
+
+
+def remove(url, job, headers):
+    request = requests.delete(urljoin(url, f"api/v1/jobs/{job}"), headers=headers)
+    request.raise_for_status()
+    return request.json()
+
+
+def list(url, headers):
+    request = requests.get(urljoin(url, "api/v1/jobs/"), headers=headers)
+    request.raise_for_status()
+    return request.json()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--url",
+        default=os.environ.get("DRAGONSCALES_SERVICE_URL"),
+    )
+    parser.add_argument(
+        "--header",
+        action="append",
+        nargs=2,
+        metavar=("key", "value"),
+        default=[],
+    )
+
+    cmdparser = parser.add_subparsers(dest="command", required=True)
+    cmdparser.add_parser("queue").add_argument("job")
+    cmdparser.add_parser("remove").add_argument("job")
+    cmdparser.add_parser("list")
+
+    checkparser = cmdparser.add_parser("check")
+    checkparser.add_argument("job")
+    checkparser.add_argument("--wait", action="store_true")
+
+    args = parser.parse_args()
+
+    headers = {}
+    for key, value in args.header:
+        headers[key] = value
+
+    if args.command == "queue":
+        response = queue(args.url, args.job, headers)
+    elif args.command == "check" and args.wait is True:
+        response = check_and_wait(args.url, args.job, headers)
+    elif args.command == "check":
+        response = check(args.url, args.job, headers)
+    elif args.command == "remove":
+        response = remove(args.url, args.job, headers)
+    elif args.command == "list":
+        response = list(args.url, headers)
+
+    print(json.dumps(response, indent=4, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()

@@ -8,8 +8,8 @@ virtualenv env > /dev/null
 source env/bin/activate > /dev/null
 pip install -r requirements.txt > /dev/null
 
-pyflakes dragonscales tests || exit 1
-black --check dragonscales tests wsgi-* || exit 1
+pyflakes dragonscales tests tools || exit 1
+black --check dragonscales tests tools wsgi-* || exit 1
 
 pkill redis-server
 
