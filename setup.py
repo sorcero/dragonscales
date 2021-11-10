@@ -33,4 +33,17 @@ setup(
     license="LGPL-3.0-or-later",
     license_files = ("LICENSE",),
     scripts=["tools/dragonscales-manager"],
+    install_requires=[
+        "click==7.1.2",
+        "uvicorn==0.11.7",
+        "fastapi==0.60.0",
+        "gunicorn==20.0.4",
+        "redis==3.5.3",
+        "rq==1.8.1",
+        "black==21.9b0",
+        "pyflakes==2.4.0",
+        "pytest==6.2.5",
+        "requests==2.26.0",
+        "json-logging==1.3.0",
+    ]
 )

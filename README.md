@@ -61,7 +61,7 @@ Once the service is up and running (see installation and setup instructions belo
 $ sudo apt install virtualenv redis
 $ virtualenv env
 $ source ./env/bin/activate
-$ pip install -r requirements.txt
+$ pip install .
 ```
 
 ## Setup

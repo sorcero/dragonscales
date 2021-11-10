@@ -6,7 +6,7 @@ export DRAGONSCALES_REDIS_URL=redis://localhost:6379
 
 virtualenv env > /dev/null
 source env/bin/activate > /dev/null
-pip install -r requirements.txt > /dev/null
+pip install . > /dev/null
 
 pyflakes dragonscales tests tools || exit 1
 black --check dragonscales tests tools wsgi-* || exit 1
