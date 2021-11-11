@@ -39,7 +39,7 @@ class Engine(object):
         self._authorizer = None
 
         self._path = os.environ.get("DRAGONSCALES_PROJECT_PATH")
-        self._url = os.environ.get("DRAGONSCALES_REDIS_URL", "redis://localhost:6379")
+        self._url = os.environ.get("DRAGONSCALES_QUEUE_URL", "redis://localhost:6379")
 
         logger.debug(
             "initializing",

@@ -82,7 +82,9 @@ $ redis-server
 For each queue specified in the project file, run a worker:
 
 ```bash
-$ rq worker $QUEUE
+$ export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
+$ export DRAGONSCALES_QUEUE_NAME=queue
+$ ./dragonscales-worker.sh
 ```
 
 Finally, run the jobs service:
@@ -92,8 +94,9 @@ $ export DRAGONSCALES_LOGGER_LEVEL=DEBUG
 $ export DRAGONSCALES_LOGGER_PATH=dragonscales.log
 $ export DRAGONSCALES_LOGGER_MAX_BYTES=1048576
 $ export DRAGONSCALES_PROJECT_PATH=project.json
-$ export DRAGONSCALES_REDIS_URL=redis://localhost:6379
-$ gunicorn --bind 0.0.0.0:5003 --worker-class=uvicorn.workers.UvicornWorker wsgi-dragonscales:app
+$ export DRAGONSCALES_SERVICE_ADDRESS=0.0.0.0:5003
+$ export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
+$ ./dragonscales-service.sh
 ```
 
 ## Disclaimer

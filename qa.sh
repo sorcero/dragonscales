@@ -2,7 +2,7 @@
 WAIT_TIME=5
 
 export DRAGONSCALES_PROJECT_PATH=$PWD/tests/projects/test.json
-export DRAGONSCALES_REDIS_URL=redis://localhost:6379
+export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
 
 virtualenv env > /dev/null
 source env/bin/activate > /dev/null
