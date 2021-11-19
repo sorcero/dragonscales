@@ -21,6 +21,8 @@
 
 from typing import List, Union
 from pydantic import BaseModel
+from enum import Enum
+from rq.job import JobStatus as RqStatus
 
 
 class TaskDef(BaseModel):
@@ -67,8 +69,29 @@ class Project(BaseModel):
     authorizer: AuthorizerDef
 
 
+class Status(str, Enum):
+    QUEUED = "queued"
+    STARTED = "started"
+    FINISHED = "finished"
+    CANCELED = "canceled"
+    FAILED = "failed"
+
+    @classmethod
+    def get(cls, python_rq_status: str):
+        mapping = {
+            RqStatus.QUEUED: cls.QUEUED,
+            RqStatus.FINISHED: cls.FINISHED,
+            RqStatus.FAILED: cls.FAILED,
+            RqStatus.STARTED: cls.STARTED,
+            RqStatus.DEFERRED: cls.QUEUED,
+            RqStatus.SCHEDULED: cls.QUEUED,
+            RqStatus.STOPPED: cls.CANCELED,
+        }
+        return mapping[python_rq_status]
+
+
 class JobStatus(BaseModel):
 
     id: str
-    status: str
+    status: Status
     result: Union[dict, None]
