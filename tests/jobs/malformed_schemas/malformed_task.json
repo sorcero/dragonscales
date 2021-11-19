@@ -1,7 +1,7 @@
 {
   "task": {
-    "name": "task1",
-    "params": {}
+    "name": "task",
+    "missing-params": {}
   },
   "storage": {
     "name": "storage",

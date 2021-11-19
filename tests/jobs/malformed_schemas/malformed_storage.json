@@ -1,15 +1,14 @@
 {
-    "task": {
-      "name": "task",
-      "params": {}
-    },
-    "storage": {
-      "name": "storage",
-      "args": {}
-    },
-    "callback": {
-      "name": "callback",
-      "params": {}
-    }
+  "task": {
+    "name": "task",
+    "params": {}
+  },
+  "storage": {
+    "name": "storage",
+    "missing-params": {}
+  },
+  "callback": {
+    "name": "callback",
+    "params": {}
   }
-  
+}
