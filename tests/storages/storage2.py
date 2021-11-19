@@ -4,7 +4,7 @@ from dragonscales import storages
 
 
 class Storage(storages.BaseStorage):
-    def store(self, result, x):
+    def store(self, result, x: str):
         storage_path = "/tmp/dragonscale.storage"
         x = str(x) + "!"
         with open(storage_path, "w") as storage_file:
