@@ -18,7 +18,12 @@ sleep $WAIT_TIME
 redis-cli FLUSHALL 
 rq worker queue > /dev/null &
 
-python3 -m pytest $PWD/tests/services/service.py
+export JOBS=$PWD/tests/jobs
+
+for job in $JOBS/*.json ; do
+    echo "TESTING ${job}"
+    python3 -m pytest $PWD/tests/services/service.py --job_path $job
+done
 
 pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker queue"
 sleep $WAIT_TIME

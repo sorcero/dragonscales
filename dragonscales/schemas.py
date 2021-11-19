@@ -67,31 +67,6 @@ class Project(BaseModel):
     authorizer: AuthorizerDef
 
 
-class TaskRef(BaseModel):
-
-    name: str
-    params: dict
-
-
-class StorageRef(BaseModel):
-
-    name: str
-    params: dict
-
-
-class CallbackRef(BaseModel):
-
-    name: str
-    params: dict
-
-
-class JobRequest(BaseModel):
-
-    task: TaskRef
-    storage: StorageRef
-    callback: CallbackRef
-
-
 class JobStatus(BaseModel):
 
     id: str

@@ -1,0 +1,25 @@
+{
+  "task": {
+    "name": "task2",
+    "params": {
+        "a": 2,
+        "b": "two",
+        "c": {
+            "one": 1
+        }
+    }
+  },
+  "storage": {
+    "name": "storage2",
+    "params": {
+      "x" : 3
+    }
+  },
+  "callback": {
+    "name": "callback2",
+    "params": {
+      "y": "three"
+    }
+  }
+}
+  

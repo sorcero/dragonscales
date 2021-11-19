@@ -11,6 +11,12 @@
             "queue": "queue",
             "module": "tests.tasks.task",
             "args": {}
+        },
+        {
+            "name": "task2",
+            "queue": "queue",
+            "module": "tests.tasks.task2",
+            "args": {}
         }
     ],
     "storages": [
@@ -18,12 +24,22 @@
             "name": "storage",
             "module": "tests.storages.storage",
             "args": {}
+        },
+        {
+            "name": "storage2",
+            "module": "tests.storages.storage2",
+            "args": {}
         }
     ],
     "callbacks": [
         {
             "name": "callback",
             "module": "tests.callbacks.callback",
+            "args": {}
+        },
+        {
+            "name": "callback2",
+            "module": "tests.callbacks.callback2",
             "args": {}
         }
     ],

@@ -25,10 +25,10 @@ def teardown_module():
     pathlib.Path(callback_path).unlink(missing_ok=True)
 
 
-def test_create():
+def test_create(job_path):
     global job_id
 
-    with open("tests/jobs/test.json", "r") as fp:
+    with open(job_path, "r") as fp:
         job = json.loads(fp.read())
 
     # XXX see if it is called json (analogous to linka)
