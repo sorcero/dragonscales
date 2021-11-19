@@ -25,6 +25,9 @@ for job in $JOBS/*.json ; do
     python3 -m pytest $PWD/tests/services/service.py --job_path $job
 done
 
+echo "TESTING ${PWD}/tests/services/malformed_service.py"
+python3 -m pytest $PWD/tests/services/malformed_service.py
+
 pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker queue"
 sleep $WAIT_TIME
 pkill redis-server
