@@ -67,14 +67,7 @@ class Engine(object):
             instance = module.Task(queue=task.queue, **task.args)
             self._tasks[task.name] = instance
 
-            params = {
-                param: (
-                    (param_info.annotation.__name__, ...)
-                    if param_info.annotation is not _empty
-                    else (Any, ...)
-                )
-                for param, param_info in signature(instance.run).parameters.items()
-            }
+            params = self._create_params_from_signature(instance.run, [])
             self._tasks_schemas.append(
                 self._create_ref_class("Task", task.name, params)
             )
@@ -84,15 +77,7 @@ class Engine(object):
             instance = module.Storage(**storage.args)
             self._storages[storage.name] = instance
 
-            params = {
-                param: (
-                    (param_info.annotation.__name__, ...)
-                    if param_info.annotation is not _empty
-                    else (Any, ...)
-                )
-                for param, param_info in signature(instance.store).parameters.items()
-                if param != "result"
-            }
+            params = self._create_params_from_signature(instance.store, ["result"])
             self._storages_schemas.append(
                 self._create_ref_class("Storage", storage.name, params)
             )
@@ -102,15 +87,7 @@ class Engine(object):
             instance = module.Callback(**callback.args)
             self._callbacks[callback.name] = instance
 
-            params = {
-                param: (
-                    (param_info.annotation.__name__, ...)
-                    if param_info.annotation is not _empty
-                    else (Any, ...)
-                )
-                for param, param_info in signature(instance.call).parameters.items()
-                if param != "location"
-            }
+            params = self._create_params_from_signature(instance.call, ["location"])
             self._callbacks_schemas.append(
                 self._create_ref_class("Callback", callback.name, params)
             )
@@ -118,6 +95,18 @@ class Engine(object):
         authorizer = self._project.authorizer
         module = __import__(authorizer.module, fromlist=[None])
         self._authorizer = module.Authorizer(**authorizer.args)
+
+    def _create_params_from_signature(self, method, excluded):
+        params = {
+            param: (
+                (param_info.annotation.__name__, ...)
+                if param_info.annotation is not _empty
+                else (Any, ...)
+            )
+            for param, param_info in signature(method).parameters.items()
+            if param not in excluded
+        }
+        return params
 
     def _create_params_class(self, type, name, params):
         return create_model(f"{type}RefParams_{name}", **params)
