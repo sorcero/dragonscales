@@ -20,6 +20,10 @@
 #
 
 from pydantic import BaseModel
+from rq import get_current_job
+
+from dragonscales.schemas import JobStatus, Status
+from .logger import logger
 
 
 class BaseTask(BaseModel):
@@ -31,9 +35,47 @@ class BaseTask(BaseModel):
     def private_run(
         self, storage, callback, task_params, storage_params, callback_params
     ):
-        result = self.run(**task_params)
-        location = storage.store(result, **storage_params)
-        callback.call(location, **callback_params)
+        job = get_current_job()
+        job_status = JobStatus(
+            id=job.id, status=job.get_status(refresh=True), result=None
+        )
+        error = None
+
+        try:
+            result = self.run(**task_params)
+            location = storage.store(result, **storage_params)
+            job_status.result = location
+        except Exception as e:
+            logger.error(
+                "error",
+                extra={
+                    "props": {
+                        "job id": job.id,
+                        "error": str(e),
+                    }
+                },
+            )
+            error = e
+            job_status.status = Status.FAILED
+            job_status.info = str(error)
+        else:
+            job_status.status = Status.FINISHED
+
+        try:
+            callback.call(job_status.dict(), **callback_params)
+        except Exception as e:
+            logger.error(
+                "error",
+                extra={
+                    "props": {
+                        "job id": job.id,
+                        "error": str(e),
+                    }
+                },
+            )
+
+        if error is not None:
+            raise error
 
         return location
 

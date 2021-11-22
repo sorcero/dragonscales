@@ -17,6 +17,12 @@
             "queue": "queue",
             "module": "tests.tasks.task2",
             "args": {}
+        },
+        {
+            "name": "task3",
+            "queue": "queue",
+            "module": "tests.tasks.task3",
+            "args": {}
         }
     ],
     "storages": [
@@ -28,6 +34,11 @@
         {
             "name": "storage2",
             "module": "tests.storages.storage2",
+            "args": {}
+        },
+        {
+            "name": "storage3",
+            "module": "tests.storages.storage3",
             "args": {}
         }
     ],

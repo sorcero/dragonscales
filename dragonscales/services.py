@@ -56,6 +56,7 @@ def get(id: str, user: dict = Depends(engine.authorize)):
         id=job.id,
         status=Status.get(job.get_status(refresh=True)),
         result=job.result,
+        info=job.exc_info,
     )
 
 

@@ -95,3 +95,4 @@ class JobStatus(BaseModel):
     id: str
     status: Status
     result: Union[dict, None]
+    info: Union[str, None] = None

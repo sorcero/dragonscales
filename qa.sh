@@ -28,6 +28,9 @@ done
 echo "TESTING ${PWD}/tests/services/malformed_service.py"
 python3 -m pytest $PWD/tests/services/malformed_service.py
 
+echo "TESTING ${PWD}/tests/services/exception_service.py"
+python3 -m pytest $PWD/tests/services/exception_service.py
+
 pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker queue"
 sleep $WAIT_TIME
 pkill redis-server
