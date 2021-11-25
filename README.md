@@ -82,6 +82,9 @@ $ redis-server
 For each queue specified in the project file, run a worker:
 
 ```bash
+$ export DRAGONSCALES_LOGGER_LEVEL=DEBUG
+$ export DRAGONSCALES_LOGGER_PATH=dragonscales-worker.log
+$ export DRAGONSCALES_LOGGER_MAX_BYTES=1048576
 $ export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
 $ export DRAGONSCALES_QUEUE_NAME=queue
 $ ./dragonscales-worker.sh
@@ -91,7 +94,7 @@ Finally, run the jobs service:
 
 ```bash
 $ export DRAGONSCALES_LOGGER_LEVEL=DEBUG
-$ export DRAGONSCALES_LOGGER_PATH=dragonscales.log
+$ export DRAGONSCALES_LOGGER_PATH=dragonscales-service.log
 $ export DRAGONSCALES_LOGGER_MAX_BYTES=1048576
 $ export DRAGONSCALES_PROJECT_PATH=project.json
 $ export DRAGONSCALES_SERVICE_ADDRESS=0.0.0.0:5003
