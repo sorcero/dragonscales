@@ -21,7 +21,7 @@
 
 import os
 
-from rq import Queue, get_current_job
+from rq import Queue, Retry, get_current_job
 from .schemas import JobStatus, Status
 
 from .logger import logger
@@ -40,7 +40,12 @@ def enqueue_delivery(job, connection):
         os.environ.get("DRAGONSCALES_DELIVERY_QUEUE_NAME", "delivery"),
         connection=connection,
     )
-    queue.enqueue(deliver_results, job.id, meta=job.meta)
+    queue.enqueue(
+        deliver_results,
+        job.id,
+        meta=job.meta,
+        retry=Retry(max=3, interval=[30, 60, 120]),
+    )
 
 
 def deliver_results(job_id):

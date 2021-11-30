@@ -18,7 +18,7 @@ pkill redis-server
 redis-server > /dev/null &
 sleep $WAIT_TIME
 redis-cli FLUSHALL 
-rq worker queue delivery > /dev/null &
+rq worker --with-scheduler queue delivery > /dev/null &
 
 export JOBS=$PWD/tests/jobs
 
@@ -33,7 +33,7 @@ python3 -m pytest $PWD/tests/services/malformed_service.py
 echo "TESTING ${PWD}/tests/services/exception_service.py"
 python3 -m pytest $PWD/tests/services/exception_service.py
 
-pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker queue delivery"
+pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker --with-scheduler queue delivery"
 sleep $WAIT_TIME
 pkill redis-server
 sleep $WAIT_TIME
