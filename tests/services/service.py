@@ -2,6 +2,7 @@ import os
 import pathlib
 import pytest
 import json
+import time
 
 from fastapi.testclient import TestClient
 
@@ -56,6 +57,9 @@ def test_get():
 
     assert os.path.exists(storage_path)
     assert {"path": storage_path} == result
+
+    # wait for delivery queue
+    time.sleep(5)
 
     assert os.path.exists(callback_path)
     with open(callback_path, "r") as fp:

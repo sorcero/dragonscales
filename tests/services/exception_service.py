@@ -2,6 +2,7 @@ import pathlib
 import json
 import pytest
 import os
+import time
 
 from fastapi.testclient import TestClient
 
@@ -49,6 +50,9 @@ def test_task_exception():
 
 
 def test_callback_exception():
+    # wait for delivery
+    time.sleep(5)
+
     assert os.path.exists(callback_path)
     with open(callback_path, "r") as fp:
         callback_content = json.loads(fp.read())

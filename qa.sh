@@ -3,6 +3,8 @@ WAIT_TIME=5
 
 export DRAGONSCALES_PROJECT_PATH=$PWD/tests/projects/test.json
 export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
+export DRAGONSCALES_QUEUE_NAME=queue
+export DRAGONSCALES_DELIVERY_QUEUE_NAME=delivery
 
 virtualenv env > /dev/null
 source env/bin/activate > /dev/null
@@ -16,7 +18,7 @@ pkill redis-server
 redis-server > /dev/null &
 sleep $WAIT_TIME
 redis-cli FLUSHALL 
-rq worker queue > /dev/null &
+rq worker queue delivery > /dev/null &
 
 export JOBS=$PWD/tests/jobs
 
@@ -31,7 +33,7 @@ python3 -m pytest $PWD/tests/services/malformed_service.py
 echo "TESTING ${PWD}/tests/services/exception_service.py"
 python3 -m pytest $PWD/tests/services/exception_service.py
 
-pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker queue"
+pkill -xf "${PWD}/env/bin/python ${PWD}/env/bin/rq worker queue delivery"
 sleep $WAIT_TIME
 pkill redis-server
 sleep $WAIT_TIME

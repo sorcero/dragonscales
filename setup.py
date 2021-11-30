@@ -39,7 +39,7 @@ setup(
         "fastapi==0.60.0",
         "gunicorn==20.0.4",
         "redis==3.5.3",
-        "rq==1.8.1",
+        "rq==1.10.0",
         "black==21.9b0",
         "pyflakes==2.4.0",
         "pytest==6.2.5",

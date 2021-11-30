@@ -32,6 +32,7 @@ from typing_extensions import Literal
 
 from . import schemas
 from .logger import logger
+from .workers import deliver_success, deliver_failure
 
 
 class Engine(object):
@@ -41,6 +42,7 @@ class Engine(object):
         self._storages = {}
         self._callbacks = {}
         self._authorizer = None
+        self._delivery_queue = None
 
         self._tasks_schemas = []
         self._storages_schemas = []
@@ -61,6 +63,11 @@ class Engine(object):
             self._queues[queue.name] = Queue(
                 queue.name, connection=self._redis, **queue.args
             )
+
+        self._delivery_queue = Queue(
+            os.environ.get("DRAGONSCALES_DELIVERY_QUEUE_NAME", "delivery"),
+            connection=self._redis,
+        )
 
         for task in self._project.tasks:
             module = __import__(task.module, fromlist=[None])
@@ -138,13 +145,20 @@ class Engine(object):
         callback_instance = self._callbacks.get(callback.name)
         queue = self._queues.get(task_instance.queue)
 
+        delivery = {
+            "queue": task_instance.queue,
+            "callback": callback_instance,
+            "callback_params": callback.params.dict(),
+        }
+
         job = queue.enqueue(
             task_instance.private_run,
             storage_instance,
-            callback_instance,
             task.params.dict(),
             storage.params.dict(),
-            callback.params.dict(),
+            on_success=deliver_success,
+            on_failure=deliver_failure,
+            meta=delivery,
         )
 
         return job
@@ -192,7 +206,8 @@ class Engine(object):
         try:
             send_stop_job_command(self._redis, job.id)
         except Exception:
-            job.cancel()
+            pass
+
         job.delete()
 
     async def authorize(self, request: Request):

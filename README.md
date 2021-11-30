@@ -87,6 +87,7 @@ $ export DRAGONSCALES_LOGGER_PATH=dragonscales-worker.log
 $ export DRAGONSCALES_LOGGER_MAX_BYTES=1048576
 $ export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
 $ export DRAGONSCALES_QUEUE_NAME=queue
+$ export DRAGONSCALES_DELIVERY_QUEUE_NAME=delivery
 $ ./dragonscales-worker.sh
 ```
 
@@ -99,6 +100,7 @@ $ export DRAGONSCALES_LOGGER_MAX_BYTES=1048576
 $ export DRAGONSCALES_PROJECT_PATH=project.json
 $ export DRAGONSCALES_SERVICE_ADDRESS=0.0.0.0:5003
 $ export DRAGONSCALES_QUEUE_URL=redis://localhost:6379
+$ export DRAGONSCALES_DELIVERY_QUEUE_NAME=delivery
 $ ./dragonscales-service.sh
 ```
 
